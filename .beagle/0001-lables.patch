@@ -1,30 +1,160 @@
-From 4ea08d1704e12ce4d9921c17d957c7eb764fd1ad Mon Sep 17 00:00:00 2001
+From c0a04c1ed5848b24c149dfd7e625d4cce11775d0 Mon Sep 17 00:00:00 2001
 From: shucheng <shucheng@bd-apaas.com>
-Date: Sun, 20 Jun 2021 18:41:39 +0800
-Subject: [PATCH] lables
+Date: Mon, 21 Jun 2021 00:17:26 +0800
+Subject: [PATCH] labels
 
 ---
- command/daemon/daemon.go | 7 +++++++
- 1 file changed, 7 insertions(+)
+ command/daemon/daemon.go |  1 +
+ engine/spec.go           |  1 +
+ go.mod                   | 10 +++------
+ go.sum                   | 44 +++++++++-------------------------------
+ 4 files changed, 15 insertions(+), 41 deletions(-)
 
 diff --git a/command/daemon/daemon.go b/command/daemon/daemon.go
-index 7d4cade..c9bd55e 100644
+index 7d4cade..9b7efa6 100644
 --- a/command/daemon/daemon.go
 +++ b/command/daemon/daemon.go
-@@ -186,6 +186,13 @@ func (c *daemonCommand) run(*kingpin.ParseContext) error {
- 		).Exec,
- 	}
- 
-+	if len(config.Runner.Name) > 0 {
-+		if config.Runner.Labels == nil {
-+			config.Runner.Labels = make(map[string]string)
-+		}
-+		config.Runner.Labels["Machine"] = config.Runner.Name
-+	}
-+
- 	poller := &poller.Poller{
+@@ -190,6 +190,7 @@ func (c *daemonCommand) run(*kingpin.ParseContext) error {
  		Client:   cli,
  		Dispatch: runner.Run,
+ 		Filter: &client.Filter{
++			Machine: config.Runner.Name,
+ 			Kind:    resource.Kind,
+ 			Type:    resource.Type,
+ 			OS:      config.Platform.OS,
+diff --git a/engine/spec.go b/engine/spec.go
+index 5467a86..3b6d4f1 100644
+--- a/engine/spec.go
++++ b/engine/spec.go
+@@ -151,6 +151,7 @@ func (s *Secret) IsMasked() bool   { return s.Mask }
+ //
+ 
+ func (s *Step) GetName() string                  { return s.Name }
++func (s *Step) GetImage() string                 { return s.Image }
+ func (s *Step) GetDependencies() []string        { return s.DependsOn }
+ func (s *Step) GetEnviron() map[string]string    { return s.Envs }
+ func (s *Step) SetEnviron(env map[string]string) { s.Envs = env }
+diff --git a/go.mod b/go.mod
+index f5ed739..2bb8246 100644
+--- a/go.mod
++++ b/go.mod
+@@ -4,6 +4,8 @@ go 1.12
+ 
+ replace github.com/docker/docker => github.com/docker/engine v17.12.0-ce-rc1.0.20200309214505-aa6a9891b09c+incompatible
+ 
++replace github.com/drone/runner-go => github.com/mengkzhaoyun/runner-go v1.7.1-alpha.1
++
+ require (
+ 	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78 // indirect
+ 	github.com/Microsoft/go-winio v0.4.11 // indirect
+@@ -15,7 +17,7 @@ require (
+ 	github.com/docker/distribution v2.7.1+incompatible
+ 	github.com/docker/docker v0.0.0-00010101000000-000000000000
+ 	github.com/docker/go-connections v0.3.0 // indirect
+-	github.com/drone/drone-go v1.4.1-0.20201109202657-b9e58bbbcf27
++	github.com/drone/drone-go v1.6.0
+ 	github.com/drone/envsubst v1.0.2
+ 	github.com/drone/runner-go v1.6.1-0.20201109204555-a2c975273a49
+ 	github.com/drone/signal v1.0.0
+@@ -25,7 +27,6 @@ require (
+ 	github.com/gorilla/mux v1.7.4 // indirect
+ 	github.com/joho/godotenv v1.3.0
+ 	github.com/kelseyhightower/envconfig v1.4.0
+-	github.com/kr/pretty v0.1.0 // indirect
+ 	github.com/mattn/go-isatty v0.0.8
+ 	github.com/morikuni/aec v1.0.0 // indirect
+ 	github.com/opencontainers/go-digest v1.0.0-rc1 // indirect
+@@ -33,14 +34,9 @@ require (
+ 	github.com/pkg/errors v0.8.1 // indirect
+ 	github.com/sirupsen/logrus v1.4.2
+ 	github.com/stretchr/testify v1.3.0 // indirect
+-	golang.org/x/lint v0.0.0-20190313153728-d0100b6bd8b3 // indirect
+ 	golang.org/x/sync v0.0.0-20190423024810-112230192c58
+ 	golang.org/x/time v0.0.0-20181108054448-85acf8d2951c // indirect
+-	golang.org/x/tools v0.0.0-20190524140312-2c0ae7006135 // indirect
+ 	google.golang.org/grpc v1.29.1 // indirect
+ 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
+-	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
+-	gopkg.in/yaml.v2 v2.2.2 // indirect
+ 	gotest.tools v2.2.0+incompatible // indirect
+-	honnef.co/go/tools v0.0.0-20190523083050-ea95bdfd59fc // indirect
+ )
+diff --git a/go.sum b/go.sum
+index 93d27b0..b8db019 100644
+--- a/go.sum
++++ b/go.sum
+@@ -36,36 +36,10 @@ github.com/docker/go-connections v0.3.0 h1:3lOnM9cSzgGwx8VfK/NGOW5fLQ0GjIlCkaktF
+ github.com/docker/go-connections v0.3.0/go.mod h1:Gbd7IOopHjR8Iph03tsViu4nIes5XhDvyHbTtUxmeec=
+ github.com/docker/go-units v0.4.0 h1:3uh0PgVws3nIA0Q+MwDC8yjEPf9zjRfZZWXZYDct3Tw=
+ github.com/docker/go-units v0.4.0/go.mod h1:fgPhTUdO+D/Jk86RDLlptpiXQzgHJF7gydDDbaIK4Dk=
+-github.com/drone/drone-go v1.2.1-0.20200326064413-195394da1018 h1:aHRv4GohqzHXZEGks/Qyrd8kI7hkCdLhJO1QoYtQMjU=
+-github.com/drone/drone-go v1.2.1-0.20200326064413-195394da1018/go.mod h1:GxyeGClYohaKNYJv/ZpsmVHtMJ7WhoT+uDaJNcDIrk4=
+-github.com/drone/drone-go v1.4.1-0.20201109202657-b9e58bbbcf27 h1:58xKlW/Kwp/Apz+R5qNGzBUIzfq1Z57L7Udz1B6bgWE=
+-github.com/drone/drone-go v1.4.1-0.20201109202657-b9e58bbbcf27/go.mod h1:fxCf9jAnXDZV1yDr0ckTuWd1intvcQwfJmTRpTZ1mXg=
++github.com/drone/drone-go v1.6.0 h1:HJXienGtXlUKLe8z0iDsX6012CE9/2of5pQpUiD+zSA=
++github.com/drone/drone-go v1.6.0/go.mod h1:fxCf9jAnXDZV1yDr0ckTuWd1intvcQwfJmTRpTZ1mXg=
+ github.com/drone/envsubst v1.0.2 h1:dpYLMAspQHW0a8dZpLRKe9jCNvIGZPhCPrycZzIHdqo=
+ github.com/drone/envsubst v1.0.2/go.mod h1:bkZbnc/2vh1M12Ecn7EYScpI4YGYU0etwLJICOWi8Z0=
+-github.com/drone/runner-go v1.6.1-0.20200506182602-d2e6327ade15 h1:+oj5a9GdF1DeQ3+i1pxARZBCd2wjYPPZveerAcF+WZk=
+-github.com/drone/runner-go v1.6.1-0.20200506182602-d2e6327ade15/go.mod h1:+Zc4z9/xqlqkFkAcqOtuYjYS77d2PeuWh0PxxibHfNs=
+-github.com/drone/runner-go v1.6.1-0.20200812000613-56f7972d3926 h1:3amY6XK13uKxSVEkl4qKXU6CZsEZnKYbY2c9glonlDw=
+-github.com/drone/runner-go v1.6.1-0.20200812000613-56f7972d3926/go.mod h1:+Zc4z9/xqlqkFkAcqOtuYjYS77d2PeuWh0PxxibHfNs=
+-github.com/drone/runner-go v1.6.1-0.20200813033918-b849bd35b2eb h1:jypm+IUZsFW6rINKlYm+/PmdGXRB18ugDbBkZiuBh8I=
+-github.com/drone/runner-go v1.6.1-0.20200813033918-b849bd35b2eb/go.mod h1:+Zc4z9/xqlqkFkAcqOtuYjYS77d2PeuWh0PxxibHfNs=
+-github.com/drone/runner-go v1.6.1-0.20200909134029-fcb3f98de0a9 h1:6s0Z33ZmTAYtTi+MUJ2cLpuIOrJhg9kdel0L3vqetEY=
+-github.com/drone/runner-go v1.6.1-0.20200909134029-fcb3f98de0a9/go.mod h1:+Zc4z9/xqlqkFkAcqOtuYjYS77d2PeuWh0PxxibHfNs=
+-github.com/drone/runner-go v1.6.1-0.20200915182738-e567c860a85f h1:MGMpEIlsJGhjLt2Il6swN6Dey5ULt8u+oDfWXPhi4DU=
+-github.com/drone/runner-go v1.6.1-0.20200915182738-e567c860a85f/go.mod h1:+Zc4z9/xqlqkFkAcqOtuYjYS77d2PeuWh0PxxibHfNs=
+-github.com/drone/runner-go v1.6.1-0.20200915183738-9497cc9f42d2 h1:Dl/C3J3w4SQXQXOXIYvI6JwwZHRpkBqD51RiC/kBkDI=
+-github.com/drone/runner-go v1.6.1-0.20200915183738-9497cc9f42d2/go.mod h1:+Zc4z9/xqlqkFkAcqOtuYjYS77d2PeuWh0PxxibHfNs=
+-github.com/drone/runner-go v1.6.1-0.20200921133603-3bba1bdfc563 h1:swfE/yWVK8ElkDAM4mGR25I7wkxvHgxFI053rIhBXfY=
+-github.com/drone/runner-go v1.6.1-0.20200921133603-3bba1bdfc563/go.mod h1:+Zc4z9/xqlqkFkAcqOtuYjYS77d2PeuWh0PxxibHfNs=
+-github.com/drone/runner-go v1.6.1-0.20200921171532-3b4667a1ac54 h1:wcvBrqRl9QX7f1Uo+hJUXH3PxGVzQ0dVOcpqoc3AhSs=
+-github.com/drone/runner-go v1.6.1-0.20200921171532-3b4667a1ac54/go.mod h1:+Zc4z9/xqlqkFkAcqOtuYjYS77d2PeuWh0PxxibHfNs=
+-github.com/drone/runner-go v1.6.1-0.20201008195716-df774e029a03 h1:4ebPdaawF8/5zKZxRpN+yHO7ucvdVLm4ATZsgTLHR3Q=
+-github.com/drone/runner-go v1.6.1-0.20201008195716-df774e029a03/go.mod h1:+Zc4z9/xqlqkFkAcqOtuYjYS77d2PeuWh0PxxibHfNs=
+-github.com/drone/runner-go v1.6.1-0.20201015180055-9f0ba71ae255 h1:pLed5htQ9oZbXwAbmPmS+IXaiej2fm2nJR1e57QyHY0=
+-github.com/drone/runner-go v1.6.1-0.20201015180055-9f0ba71ae255/go.mod h1:+Zc4z9/xqlqkFkAcqOtuYjYS77d2PeuWh0PxxibHfNs=
+-github.com/drone/runner-go v1.6.1-0.20201016191343-2020a87dfb8c h1:WVtJlsgxuPUklmey5MNKWK+8ajuDaKsnlb03lwFBVPQ=
+-github.com/drone/runner-go v1.6.1-0.20201016191343-2020a87dfb8c/go.mod h1:+Zc4z9/xqlqkFkAcqOtuYjYS77d2PeuWh0PxxibHfNs=
+-github.com/drone/runner-go v1.6.1-0.20201109204555-a2c975273a49 h1:QhKyybx+8ZH6Pnrfu1kGaLF0TMOMWiN1yjDBCpTC1JY=
+-github.com/drone/runner-go v1.6.1-0.20201109204555-a2c975273a49/go.mod h1:dvQqJEhEoq2wmOi2AUs1Ti2BgpJdeaqU5IeEtisT588=
+ github.com/drone/signal v1.0.0 h1:NrnM2M/4yAuU/tXs6RP1a1ZfxnaHwYkd0kJurA1p6uI=
+ github.com/drone/signal v1.0.0/go.mod h1:S8t92eFT0g4WUgEc/LxG+LCuiskpMNsG0ajAMGnyZpc=
+ github.com/envoyproxy/go-control-plane v0.9.0/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
+@@ -96,13 +70,15 @@ github.com/kelseyhightower/envconfig v1.4.0 h1:Im6hONhd3pLkfDFsbRgu68RDNkGF1r3dv
+ github.com/kelseyhightower/envconfig v1.4.0/go.mod h1:cccZRl6mQpaq41TPp5QxidR+Sa3axMbJDNb//FQX6Gg=
+ github.com/konsorten/go-windows-terminal-sequences v1.0.1 h1:mweAR1A6xJ3oS2pRaGiHgQ4OO8tzTaLawm8vnODuwDk=
+ github.com/konsorten/go-windows-terminal-sequences v1.0.1/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
+-github.com/kr/pretty v0.1.0 h1:L/CwN0zerZDmRFUapSPitk6f+Q3+0za1rQkzVuMiMFI=
+-github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
++github.com/kr/pretty v0.2.1 h1:Fmg33tUaq4/8ym9TJN1x7sLJnHVwhP33CNkpYV/7rwI=
++github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
+ github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
+ github.com/kr/text v0.1.0 h1:45sCR5RtlFHMR4UwH9sdQ5TC8v0qDQCHnXt+kaKSTVE=
+ github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
+ github.com/mattn/go-isatty v0.0.8 h1:HLtExJ+uU2HOZ+wI0Tt5DtUDrx8yhUqDcp7fYERX4CE=
+ github.com/mattn/go-isatty v0.0.8/go.mod h1:Iq45c/XA43vh69/j3iqttzPXn0bhXyGjM0Hdxcsrc5s=
++github.com/mengkzhaoyun/runner-go v1.7.1-alpha.1 h1:76Ya1k/0YNi6G8JxaQK1sX76hCjR+w0CGLNPVmTwow8=
++github.com/mengkzhaoyun/runner-go v1.7.1-alpha.1/go.mod h1:ca4BhqQFRyVeVeu+K1TikkBMv28KtHh3Zbcgtn5HWbI=
+ github.com/morikuni/aec v1.0.0 h1:nP9CBfwrvYnBRgY6qfDQkygYDmYwOilePFkwzv4dU8A=
+ github.com/morikuni/aec v1.0.0/go.mod h1:BbKIizmSmc5MMPqRYbxO4ZU0S0+P200+tUnFx7PXmsc=
+ github.com/natessilva/dag v0.0.0-20180124060714-7194b8dcc5c4 h1:dnMxwus89s86tI8rcGVp2HwZzlz7c5o92VOy7dSckBQ=
+@@ -168,10 +144,10 @@ google.golang.org/grpc v1.29.1/go.mod h1:itym6AZVZYACWQqET3MqgPpjcuV5QH3BxFS3Iji
+ gopkg.in/alecthomas/kingpin.v2 v2.2.6 h1:jMFz6MfLP0/4fUyZle81rXUoxOBFi19VUFKVDOQfozc=
+ gopkg.in/alecthomas/kingpin.v2 v2.2.6/go.mod h1:FMv+mEhP44yOT+4EoQTLFTRgOQ1FBLkstjWtayDeSgw=
+ gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
+-gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 h1:qIbj1fsPNlZgppZ+VLlY7N33q108Sa+fhmuc+sWQYwY=
+-gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
+-gopkg.in/yaml.v2 v2.2.2 h1:ZCJp+EgiOT7lHqUV2J862kp8Qj64Jo6az82+3Td9dZw=
+-gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
++gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c h1:Hei/4ADfdWqJk1ZMxUNpqntNwaWcugrBjAiHlqqRiVk=
++gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c/go.mod h1:JHkPIbrfpd72SG/EVd6muEfDQjcINNoR0C8j2r3qZ4Q=
++gopkg.in/yaml.v2 v2.4.0 h1:D8xgwECY7CYvx+Y2n4sBz93Jn9JRvxdiyyo8CTfuKaY=
++gopkg.in/yaml.v2 v2.4.0/go.mod h1:RDklbk79AGWmwhnvt/jBztapEOGDOx6ZbXqjP6csGnQ=
+ gotest.tools v2.2.0+incompatible h1:VsBPFP1AI068pPrMxtb/S8Zkgf9xEmTLJjfM+P5UIEo=
+ gotest.tools v2.2.0+incompatible/go.mod h1:DsYFclhRJ6vuDpmuTbkuFWG+y2sxOXAzmJt81HFBacw=
+ honnef.co/go/tools v0.0.0-20190102054323-c2f93a96b099/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=
 -- 
 2.25.1
 
