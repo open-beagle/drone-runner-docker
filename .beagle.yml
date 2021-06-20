@@ -21,7 +21,7 @@ pipeline:
     environment:
       - GOPROXY=https://goproxy.cn
     commands:
-      - git apply .beagle/0001-config.patch
+      - git apply .beagle/0001-lables.patch
       - sh .beagle/build.sh
     when:
       branch:
