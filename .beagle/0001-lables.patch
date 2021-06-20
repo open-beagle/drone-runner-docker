@@ -1,0 +1,30 @@
+From 6fcfccd2a37a3bd0dc88ef355b6d9a77018e64c5 Mon Sep 17 00:00:00 2001
+From: shucheng <shucheng@bd-apaas.com>
+Date: Thu, 17 Jun 2021 18:27:19 +0800
+Subject: [PATCH] lables
+
+---
+ cmd/drone-agent/main.go | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/cmd/drone-agent/main.go b/cmd/drone-agent/main.go
+index a33457e0..07af7873 100644
+--- a/cmd/drone-agent/main.go
++++ b/cmd/drone-agent/main.go
+@@ -95,6 +95,13 @@ func main() {
+ 		}
+ 	}
+ 
++	if len(config.Runner.Machine) > 0 {
++		if config.Runner.Labels == nil {
++			config.Runner.Labels = make(map[string]string)
++		}
++		config.Runner.Labels["Machine"] = config.Runner.Machine
++	}
++
+ 	r := &runner.Runner{
+ 		Platform:   config.Runner.Platform,
+ 		OS:         config.Runner.OS,
+-- 
+2.25.1
+

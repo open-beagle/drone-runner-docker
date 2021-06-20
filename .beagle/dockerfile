@@ -1,0 +1,22 @@
+ARG BASE
+
+FROM ${BASE}
+
+ARG AUTHOR
+ARG VERSION
+
+LABEL maintainer=${AUTHOR} version=${VERSION}
+
+ARG TARGETOS
+ARG TARGETARCH
+
+ENV GODEBUG netdns=go
+ENV DRONE_RUNNER_OS=${TARGETOS}
+ENV DRONE_RUNNER_ARCH=${TARGETARCH}
+
+ADD release/${TARGETOS}/${TARGETARCH}/drone-runner-docker /bin/
+ADD release/${TARGETOS}/${TARGETARCH}/tmate /bin/
+
+LABEL com.centurylinklabs.watchtower.stop-signal="SIGINT"
+
+ENTRYPOINT ["/bin/drone-runner-docker"]
