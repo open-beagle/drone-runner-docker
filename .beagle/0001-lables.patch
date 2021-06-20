@@ -1,30 +1,30 @@
-From 6fcfccd2a37a3bd0dc88ef355b6d9a77018e64c5 Mon Sep 17 00:00:00 2001
+From 4ea08d1704e12ce4d9921c17d957c7eb764fd1ad Mon Sep 17 00:00:00 2001
 From: shucheng <shucheng@bd-apaas.com>
-Date: Thu, 17 Jun 2021 18:27:19 +0800
+Date: Sun, 20 Jun 2021 18:41:39 +0800
 Subject: [PATCH] lables
 
 ---
- cmd/drone-agent/main.go | 7 +++++++
+ command/daemon/daemon.go | 7 +++++++
  1 file changed, 7 insertions(+)
 
-diff --git a/cmd/drone-agent/main.go b/cmd/drone-agent/main.go
-index a33457e0..07af7873 100644
---- a/cmd/drone-agent/main.go
-+++ b/cmd/drone-agent/main.go
-@@ -95,6 +95,13 @@ func main() {
- 		}
+diff --git a/command/daemon/daemon.go b/command/daemon/daemon.go
+index 7d4cade..c9bd55e 100644
+--- a/command/daemon/daemon.go
++++ b/command/daemon/daemon.go
+@@ -186,6 +186,13 @@ func (c *daemonCommand) run(*kingpin.ParseContext) error {
+ 		).Exec,
  	}
  
-+	if len(config.Runner.Machine) > 0 {
++	if len(config.Runner.Name) > 0 {
 +		if config.Runner.Labels == nil {
 +			config.Runner.Labels = make(map[string]string)
 +		}
-+		config.Runner.Labels["Machine"] = config.Runner.Machine
++		config.Runner.Labels["Machine"] = config.Runner.Name
 +	}
 +
- 	r := &runner.Runner{
- 		Platform:   config.Runner.Platform,
- 		OS:         config.Runner.OS,
+ 	poller := &poller.Poller{
+ 		Client:   cli,
+ 		Dispatch: runner.Run,
 -- 
 2.25.1
 

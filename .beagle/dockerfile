@@ -17,6 +17,8 @@ ENV DRONE_RUNNER_ARCH=${TARGETARCH}
 ADD release/${TARGETOS}/${TARGETARCH}/drone-runner-docker /bin/
 ADD release/${TARGETOS}/${TARGETARCH}/tmate /bin/
 
+RUN chmod +x /bin/tmate && chmod +x /bin/drone-runner-docker
+
 LABEL com.centurylinklabs.watchtower.stop-signal="SIGINT"
 
 ENTRYPOINT ["/bin/drone-runner-docker"]
