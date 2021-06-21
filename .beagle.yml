@@ -22,6 +22,7 @@ pipeline:
       - GOPROXY=https://goproxy.cn
     commands:
       - git apply .beagle/0001-lables.patch
+      - git apply .beagle/0002-disable-create-network.patch
       - sh .beagle/build.sh
     when:
       branch:

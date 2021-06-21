@@ -12,6 +12,7 @@ git merge v1.6.3
 
 ```bash
 git apply .beagle/0001-lables.patch
+git apply .beagle/0002-disable-create-network.patch
 
 docker run -it \
 --rm \

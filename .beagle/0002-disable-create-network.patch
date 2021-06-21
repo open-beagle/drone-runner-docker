@@ -1,0 +1,50 @@
+From e648a4a43a1157d01c86e5d2236496ba517fc7a1 Mon Sep 17 00:00:00 2001
+From: shucheng <shucheng@bd-apaas.com>
+Date: Tue, 22 Jun 2021 00:38:29 +0800
+Subject: [PATCH] disable create network
+
+---
+ engine/engine.go | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/engine/engine.go b/engine/engine.go
+index 2a559c1..1ac1848 100644
+--- a/engine/engine.go
++++ b/engine/engine.go
+@@ -81,15 +81,15 @@ func (e *Docker) Setup(ctx context.Context, specv runtime.Spec) error {
+ 
+ 	// creates the default pod network. All containers
+ 	// defined in the pipeline are attached to this network.
+-	driver := "bridge"
+-	if spec.Platform.OS == "windows" {
+-		driver = "nat"
+-	}
+-	_, err := e.client.NetworkCreate(ctx, spec.Network.ID, types.NetworkCreate{
+-		Driver:  driver,
+-		Options: spec.Network.Options,
+-		Labels:  spec.Network.Labels,
+-	})
++	// driver := "bridge"
++	// if spec.Platform.OS == "windows" {
++	// 	driver = "nat"
++	// }
++	// _, err := e.client.NetworkCreate(ctx, spec.Network.ID, types.NetworkCreate{
++	// 	Driver:  driver,
++	// 	Options: spec.Network.Options,
++	// 	Labels:  spec.Network.Labels,
++	// })
+ 
+ 	// launches the inernal setup steps
+ 	for _, step := range spec.Internal {
+@@ -120,7 +120,7 @@ func (e *Docker) Setup(ctx context.Context, specv runtime.Spec) error {
+ 		}
+ 	}
+ 
+-	return errors.TrimExtraInfo(err)
++	return errors.TrimExtraInfo(nil)
+ }
+ 
+ // Destroy the pipeline environment.
+-- 
+2.25.1
+
