@@ -64,7 +64,7 @@ pipeline:
     dockerfile: .beagle/dockerfile
     repo: wod/drone-runner-docker
     version: v1.6.3
-    channel: beta-amd64
+    channel: alpha-amd64
     args: 'TARGETOS=linux,TARGETARCH=amd64'
     registry: registry.cn-qingdao.aliyuncs.com
     secrets:
@@ -85,7 +85,7 @@ pipeline:
     dockerfile: .beagle/dockerfile
     repo: wod/drone-runner-docker
     version: v1.6.3
-    channel: beta-arm64
+    channel: alpha-arm64
     args: 'TARGETOS=linux,TARGETARCH=arm64'
     registry: registry.cn-qingdao.aliyuncs.com
     secrets:
@@ -106,7 +106,7 @@ pipeline:
     dockerfile: .beagle/dockerfile
     repo: wod/drone-runner-docker
     version: v1.6.3
-    channel: beta-ppc64le
+    channel: alpha-ppc64le
     args: 'TARGETOS=linux,TARGETARCH=ppc64le'
     registry: registry.cn-qingdao.aliyuncs.com
     secrets:
@@ -124,8 +124,8 @@ pipeline:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     platforms: linux/amd64,linux/arm64,linux/ppc64le
-    template: registry.cn-qingdao.aliyuncs.com/wod/drone-runner-docker:v1.6.3-beta-ARCH
-    target: registry.cn-qingdao.aliyuncs.com/wod/drone-runner-docker:v1.6.3-beta
+    template: registry.cn-qingdao.aliyuncs.com/wod/drone-runner-docker:v1.6.3-alpha-ARCH
+    target: registry.cn-qingdao.aliyuncs.com/wod/drone-runner-docker:v1.6.3-alpha
     secrets:
       - source: REGISTRY_USER_ALIYUN
         target: DOCKER_USERNAME
@@ -140,7 +140,7 @@ pipeline:
     dns: 223.5.5.5
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    source: registry.cn-qingdao.aliyuncs.com/wod/drone-runner-docker:v1.6.3-beta-amd64
+    source: registry.cn-qingdao.aliyuncs.com/wod/drone-runner-docker:v1.6.3-alpha-amd64
     target: registry.cn-qingdao.aliyuncs.com/wod/drone-runner-docker:v1.6.3-amd64
     registry: registry.cn-qingdao.aliyuncs.com
     secrets:
@@ -157,7 +157,7 @@ pipeline:
     dns: 223.5.5.5
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    source: registry.cn-qingdao.aliyuncs.com/wod/drone-runner-docker:v1.6.3-beta-arm64
+    source: registry.cn-qingdao.aliyuncs.com/wod/drone-runner-docker:v1.6.3-alpha-arm64
     target: registry.cn-qingdao.aliyuncs.com/wod/drone-runner-docker:v1.6.3-arm64
     registry: registry.cn-qingdao.aliyuncs.com
     secrets:
@@ -174,7 +174,7 @@ pipeline:
     dns: 223.5.5.5
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    source: registry.cn-qingdao.aliyuncs.com/wod/drone-runner-docker:v1.6.3-beta-ppc64le
+    source: registry.cn-qingdao.aliyuncs.com/wod/drone-runner-docker:v1.6.3-alpha-ppc64le
     target: registry.cn-qingdao.aliyuncs.com/wod/drone-runner-docker:v1.6.3-ppc64le
     registry: registry.cn-qingdao.aliyuncs.com
     secrets:
