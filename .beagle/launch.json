@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Go",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${workspaceRoot}",
+      "env": {
+        // "HTTP_PROXY": "http://192.168.1.11:8888",
+        "GODEBUG": "netdns=go",
+        "DRONE_RUNNER_OS": "linux",
+        "DRONE_RUNNER_ARCH": "amd64",
+        "DRONE_RPC_HOST": "localhost:8080",
+        "DRONE_RPC_PROTO": "http",
+        "DRONE_RPC_SECRET": "passwddrone",
+        "DRONE_RUNNER_CAPACITY": "2",
+        "DRONE_RUNNER_CLONE_IMAGE": "registry.cn-qingdao.aliyuncs.com/wod/devops-git:1.0",
+        "DRONE_RUNNER_NAME": "drone-runner-docker",
+        "DRONE_REPO_CONFIG": ".beagle.yml",
+        "DRONE_SECRET_PLUGIN_ENDPOINT": "https://drone-secrets.wodcloud.com",
+        "DRONE_SECRET_PLUGIN_TOKEN": "bea26a2221fd8090ea38720fc445eca6"
+      },
+      "showLog": true
+    }
+  ]
+}
