@@ -1,17 +1,45 @@
-From e648a4a43a1157d01c86e5d2236496ba517fc7a1 Mon Sep 17 00:00:00 2001
+From 454ff73ee8802827b8deb6da8fb3ab2446f4d6e4 Mon Sep 17 00:00:00 2001
 From: shucheng <shucheng@bd-apaas.com>
-Date: Tue, 22 Jun 2021 00:38:29 +0800
+Date: Tue, 22 Jun 2021 15:45:31 +0800
 Subject: [PATCH] disable create network
 
 ---
- engine/engine.go | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ engine/convert.go |  8 ++++----
+ engine/engine.go  | 43 +++++++++++++++++++++----------------------
+ 2 files changed, 25 insertions(+), 26 deletions(-)
 
+diff --git a/engine/convert.go b/engine/convert.go
+index b032058..10200c0 100644
+--- a/engine/convert.go
++++ b/engine/convert.go
+@@ -100,10 +100,10 @@ func toNetConfig(spec *Spec, proc *Step) *network.NetworkingConfig {
+ 		return &network.NetworkingConfig{}
+ 	}
+ 	endpoints := map[string]*network.EndpointSettings{}
+-	endpoints[spec.Network.ID] = &network.EndpointSettings{
+-		NetworkID: spec.Network.ID,
+-		Aliases:   []string{proc.Name},
+-	}
++	// endpoints[spec.Network.ID] = &network.EndpointSettings{
++	// 	NetworkID: spec.Network.ID,
++	// 	Aliases:   []string{proc.Name},
++	// }
+ 	return &network.NetworkingConfig{
+ 		EndpointsConfig: endpoints,
+ 	}
 diff --git a/engine/engine.go b/engine/engine.go
-index 2a559c1..1ac1848 100644
+index 2a559c1..c4c2e8c 100644
 --- a/engine/engine.go
 +++ b/engine/engine.go
-@@ -81,15 +81,15 @@ func (e *Docker) Setup(ctx context.Context, specv runtime.Spec) error {
+@@ -20,7 +20,6 @@ import (
+ 
+ 	"github.com/docker/docker/api/types"
+ 	"github.com/docker/docker/api/types/container"
+-	"github.com/docker/docker/api/types/network"
+ 	"github.com/docker/docker/api/types/volume"
+ 	"github.com/docker/docker/client"
+ )
+@@ -81,15 +80,15 @@ func (e *Docker) Setup(ctx context.Context, specv runtime.Spec) error {
  
  	// creates the default pod network. All containers
  	// defined in the pipeline are attached to this network.
@@ -36,7 +64,7 @@ index 2a559c1..1ac1848 100644
  
  	// launches the inernal setup steps
  	for _, step := range spec.Internal {
-@@ -120,7 +120,7 @@ func (e *Docker) Setup(ctx context.Context, specv runtime.Spec) error {
+@@ -120,7 +119,7 @@ func (e *Docker) Setup(ctx context.Context, specv runtime.Spec) error {
  		}
  	}
  
@@ -45,6 +73,42 @@ index 2a559c1..1ac1848 100644
  }
  
  // Destroy the pipeline environment.
+@@ -157,7 +156,7 @@ func (e *Docker) Destroy(ctx context.Context, specv runtime.Spec) error {
+ 	}
+ 
+ 	// cleanup the network
+-	e.client.NetworkRemove(ctx, spec.Network.ID)
++	// e.client.NetworkRemove(ctx, spec.Network.ID)
+ 
+ 	// notice that we never collect or return any errors.
+ 	// this is because we silently ignore cleanup failures
+@@ -259,16 +258,16 @@ func (e *Docker) create(ctx context.Context, spec *Spec, step *Step, output io.W
+ 
+ 	// attach the container to user-defined networks.
+ 	// primarily used to attach global user-defined networks.
+-	if step.Network == "" {
+-		for _, net := range step.Networks {
+-			err = e.client.NetworkConnect(ctx, net, step.ID, &network.EndpointSettings{
+-				Aliases: []string{net},
+-			})
+-			if err != nil {
+-				return nil
+-			}
+-		}
+-	}
++	// if step.Network == "" {
++	// 	for _, net := range step.Networks {
++	// 		err = e.client.NetworkConnect(ctx, net, step.ID, &network.EndpointSettings{
++	// 			Aliases: []string{net},
++	// 		})
++	// 		if err != nil {
++	// 			return nil
++	// 		}
++	// 	}
++	// }
+ 
+ 	return nil
+ }
 -- 
 2.25.1
 
