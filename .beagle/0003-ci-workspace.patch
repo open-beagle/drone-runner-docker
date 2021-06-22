@@ -1,0 +1,27 @@
+From c67ec83896bcc37aa11e975c147271a0d722802f Mon Sep 17 00:00:00 2001
+From: shucheng <shucheng@bd-apaas.com>
+Date: Wed, 23 Jun 2021 01:40:39 +0800
+Subject: [PATCH] ci workspace
+
+---
+ engine/compiler/compiler.go | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/engine/compiler/compiler.go b/engine/compiler/compiler.go
+index 63ce176..aeaeb77 100644
+--- a/engine/compiler/compiler.go
++++ b/engine/compiler/compiler.go
+@@ -234,6 +234,10 @@ func (c *Compiler) Compile(ctx context.Context, args runtime.CompilerArgs) runti
+ 	envs["DRONE_WORKSPACE_BASE"] = base
+ 	envs["DRONE_WORKSPACE_PATH"] = path
+ 
++	envs["CI_WORKSPACE_BASE"] = base
++	envs["CI_WORKSPACE_PATH"] = path
++	envs["CI_WORKSPACE"] = full
++
+ 	// create volume reference variables
+ 	if volume.EmptyDir != nil {
+ 		envs["DRONE_DOCKER_VOLUME_ID"] = volume.EmptyDir.ID
+-- 
+2.25.1
+
