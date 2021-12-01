@@ -22,6 +22,13 @@ docker run -it \
 -v /go/pkg:/go/pkg \
 -w /go/src/github.com/drone-runners/drone-runner-docker \
 -e GOPROXY=https://goproxy.cn \
-registry.cn-qingdao.aliyuncs.com/wod/golang:1.16.5-alpine \
+registry.cn-qingdao.aliyuncs.com/wod/golang:1.17.3-bullseye \
 .beagle/build.sh
+
+docker run -it \
+--rm \
+-v $PWD/:/go/src/github.com/drone-runners/drone-runner-docker \
+-w /go/src/github.com/drone-runners/drone-runner-docker \
+registry.cn-qingdao.aliyuncs.com/wod-k8s/tmate:v2.4.0-amd64 \
+cp /build/tmate release/linux/amd64/tmate
 ```
