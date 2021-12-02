@@ -36,17 +36,17 @@ steps:
   - name: tmate-amd64
     image: registry.cn-qingdao.aliyuncs.com/wod-arm/tmate:2.4.0-amd64
     commands:
-      - cp /build/tmate release/linux/amd64/tmate
+      - cp /bin/tmate release/linux/amd64/tmate
 
   - name: tmate-arm64
     image: registry.cn-qingdao.aliyuncs.com/wod-arm/tmate:2.4.0-arm64
     commands:
-      - cp /build/tmate release/linux/arm64/tmate
+      - cp /bin/tmate release/linux/arm64/tmate
 
   - name: tmate-ppc64le
     image: registry.cn-qingdao.aliyuncs.com/wod-arm/tmate:2.4.0-ppc64le
     commands:
-      - cp /build/tmate release/linux/ppc64le/tmate
+      - cp /bin/tmate release/linux/ppc64le/tmate
 
   - name: docker-amd64
     image: registry.cn-qingdao.aliyuncs.com/wod/devops-docker:1.0
