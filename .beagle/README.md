@@ -5,7 +5,7 @@ git remote add upstream git@github.com:drone-runners/drone-runner-docker.git
 
 git fetch upstream
 
-git merge v1.6.3
+git merge v1.8.0
 ```
 
 ## debug
