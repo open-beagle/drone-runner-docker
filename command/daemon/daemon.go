@@ -22,6 +22,7 @@ import (
 	"github.com/drone/runner-go/pipeline/reporter/history"
 	"github.com/drone/runner-go/pipeline/reporter/remote"
 	"github.com/drone/runner-go/pipeline/runtime"
+	"github.com/drone/runner-go/pipeline/uploader"
 	"github.com/drone/runner-go/poller"
 	"github.com/drone/runner-go/registry"
 	"github.com/drone/runner-go/secret"
@@ -109,6 +110,7 @@ func (c *daemonCommand) run(*kingpin.ParseContext) error {
 	}
 
 	remote := remote.New(cli)
+	upload := uploader.New(cli)
 	tracer := history.New(remote)
 	hook := loghistory.New()
 	logrus.AddHook(hook)
@@ -142,12 +144,13 @@ func (c *daemonCommand) run(*kingpin.ParseContext) error {
 				ShmSize:    config.Resources.ShmSize,
 			},
 			Tmate: compiler.Tmate{
-				Image:   config.Tmate.Image,
-				Enabled: config.Tmate.Enabled,
-				Server:  config.Tmate.Server,
-				Port:    config.Tmate.Port,
-				RSA:     config.Tmate.RSA,
-				ED25519: config.Tmate.ED25519,
+				Image:          config.Tmate.Image,
+				Enabled:        config.Tmate.Enabled,
+				Server:         config.Tmate.Server,
+				Port:           config.Tmate.Port,
+				RSA:            config.Tmate.RSA,
+				ED25519:        config.Tmate.ED25519,
+				AuthorizedKeys: config.Tmate.AuthorizedKeys,
 			},
 			Environ: provider.Combine(
 				provider.Static(config.Runner.Environ),
@@ -181,6 +184,7 @@ func (c *daemonCommand) run(*kingpin.ParseContext) error {
 		Exec: runtime.NewExecer(
 			tracer,
 			remote,
+			upload,
 			engine,
 			config.Runner.Procs,
 		).Exec,

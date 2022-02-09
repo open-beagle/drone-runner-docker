@@ -8,7 +8,7 @@ platform:
 
 steps:
 - name: test
-  image: golang:1.12
+  image: golang:1.16
   commands:
   - go test -cover ./...
   volumes:
@@ -16,7 +16,7 @@ steps:
     path: /go
 
 - name: build
-  image: golang:1.12
+  image: golang:1.16
   commands:
   - sh scripts/build.sh
   volumes:
@@ -69,6 +69,23 @@ steps:
     auto_tag: true
     auto_tag_suffix: linux-arm64
     dockerfile: docker/Dockerfile.linux.arm64
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+  when:
+    ref:
+    - refs/heads/master
+    - refs/tags/*
+
+- name: publish_ppc64le
+  image: plugins/docker
+  pull: if-not-exists
+  settings:
+    repo: drone/drone-runner-docker
+    auto_tag: true
+    auto_tag_suffix: linux-ppc64le
+    dockerfile: docker/Dockerfile.linux.ppc64le
     username:
       from_secret: docker_username
     password:

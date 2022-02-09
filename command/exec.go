@@ -18,6 +18,7 @@ import (
 	"github.com/drone-runners/drone-runner-docker/engine/compiler"
 	"github.com/drone-runners/drone-runner-docker/engine/linter"
 	"github.com/drone-runners/drone-runner-docker/engine/resource"
+
 	"github.com/drone/drone-go/drone"
 	"github.com/drone/envsubst"
 	"github.com/drone/runner-go/environ"
@@ -238,6 +239,7 @@ func (c *execCommand) run(*kingpin.ParseContext) error {
 	err = runtime.NewExecer(
 		pipeline.NopReporter(),
 		console.New(c.Pretty),
+		pipeline.NopUploader(),
 		engine,
 		c.Procs,
 	).Exec(ctx, spec, state)
@@ -347,6 +349,9 @@ func registerExec(app *kingpin.Application) {
 
 	cmd.Flag("tmate-server-ed25519-fingerprint", "tmate server rsa fingerprint").
 		StringVar(&c.Tmate.ED25519)
+
+	cmd.Flag("tmate-authorized-keys", "tmate authorized keys").
+		StringVar(&c.Tmate.AuthorizedKeys)
 
 	cmd.Flag("debug", "enable debug logging").
 		BoolVar(&c.Debug)
