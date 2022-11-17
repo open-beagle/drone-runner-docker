@@ -5,3 +5,5 @@ release/*
 .env
 NOTES*
 .vscode
+
+vendor/
