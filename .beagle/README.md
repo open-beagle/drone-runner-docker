@@ -5,7 +5,7 @@ git remote add upstream git@github.com:drone-runners/drone-runner-docker.git
 
 git fetch upstream
 
-git merge v1.8.0
+git merge v1.8.3
 ```
 
 ## debug
@@ -44,10 +44,9 @@ docker run --rm \
   -e PLUGIN_ENDPOINT=$PLUGIN_ENDPOINT \
   -e PLUGIN_ACCESS_KEY=$PLUGIN_ACCESS_KEY \
   -e PLUGIN_SECRET_KEY=$PLUGIN_SECRET_KEY \
-  -e DRONE_REPO_OWNER="cloud" \
+  -e DRONE_REPO_OWNER="open-beagle" \
   -e DRONE_REPO_NAME="drone-runner-docker" \
-  -e DRONE_COMMIT_BRANCH="dev" \
-  -e PLUGIN_MOUNT="./vendor" \
+  -e PLUGIN_MOUNT="./.git,./vendor,./go.sum" \
   -v $(pwd):$(pwd) \
   -w $(pwd) \
   registry.cn-qingdao.aliyuncs.com/wod/devops-s3-cache:1.0
@@ -58,9 +57,8 @@ docker run --rm \
   -e PLUGIN_ENDPOINT=$PLUGIN_ENDPOINT \
   -e PLUGIN_ACCESS_KEY=$PLUGIN_ACCESS_KEY \
   -e PLUGIN_SECRET_KEY=$PLUGIN_SECRET_KEY \
-  -e DRONE_REPO_OWNER="cloud" \
+  -e DRONE_REPO_OWNER="open-beagle" \
   -e DRONE_REPO_NAME="drone-runner-docker" \
-  -e DRONE_COMMIT_BRANCH="dev" \
   -v $(pwd):$(pwd) \
   -w $(pwd) \
   registry.cn-qingdao.aliyuncs.com/wod/devops-s3-cache:1.0
