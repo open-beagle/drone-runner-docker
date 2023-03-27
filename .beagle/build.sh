@@ -6,12 +6,14 @@ set -ex
 
 REPO="github.com/drone-runners/drone-runner-docker"
 
+go mod tidy
+
 # compile the server using the cgo
 export GOARCH=amd64
-go build -o release/linux/${GOARCH}/drone-runner-docker ${REPO}/
+go build -ldflags "-extldflags \"-s -w -static\"" -o release/linux/${GOARCH}/drone-runner-docker ${REPO}/
 
 export GOARCH=arm64
-go build -o release/linux/${GOARCH}/drone-runner-docker ${REPO}/
+go build -ldflags "-extldflags \"-s -w -static\"" -o release/linux/${GOARCH}/drone-runner-docker ${REPO}/
 
 export GOARCH=ppc64le
-go build -o release/linux/${GOARCH}/drone-runner-docker ${REPO}/
+go build -ldflags "-extldflags \"-s -w -static\"" -o release/linux/${GOARCH}/drone-runner-docker ${REPO}/

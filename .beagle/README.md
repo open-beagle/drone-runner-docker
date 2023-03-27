@@ -46,7 +46,7 @@ docker run --rm \
   -e PLUGIN_SECRET_KEY=$PLUGIN_SECRET_KEY \
   -e DRONE_REPO_OWNER="open-beagle" \
   -e DRONE_REPO_NAME="drone-runner-docker" \
-  -e PLUGIN_MOUNT="./.git,./vendor,./go.sum" \
+  -e PLUGIN_MOUNT="./.git,./vendor" \
   -v $(pwd):$(pwd) \
   -w $(pwd) \
   registry.cn-qingdao.aliyuncs.com/wod/devops-s3-cache:1.0
