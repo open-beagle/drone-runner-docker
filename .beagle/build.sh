@@ -17,3 +17,6 @@ go build -ldflags "-extldflags \"-s -w -static\"" -o release/linux/${GOARCH}/dro
 
 export GOARCH=ppc64le
 go build -ldflags "-extldflags \"-s -w -static\"" -o release/linux/${GOARCH}/drone-runner-docker ${REPO}/
+
+export GOARCH=mips64le
+go build -ldflags "-extldflags \"-s -w -static\"" -o release/linux/${GOARCH}/drone-runner-docker ${REPO}/
