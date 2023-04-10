@@ -14,25 +14,36 @@ git merge v1.8.3
 git apply .beagle/0001-lables.patch
 git apply .beagle/0002-disable-create-network.patch
 git apply .beagle/0003-ci-workspace.patch
+git apply .beagle/0004-gomod.patch
 
 docker run -it --rm \
 -v $PWD/:/go/src/github.com/drone-runners/drone-runner-docker \
 -w /go/src/github.com/drone-runners/drone-runner-docker \
-registry.cn-qingdao.aliyuncs.com/wod/golang:1.19 \
+registry.cn-qingdao.aliyuncs.com/wod/golang:1.20 \
 rm -rf vendor && go mod vendor
 
 docker run -it --rm \
 -v $PWD/:/go/src/github.com/drone-runners/drone-runner-docker \
 -w /go/src/github.com/drone-runners/drone-runner-docker \
-registry.cn-qingdao.aliyuncs.com/wod/golang:1.19 \
+registry.cn-qingdao.aliyuncs.com/wod/golang:1.20 \
 .beagle/build.sh
 
 docker run -it \
 --rm \
 -v $PWD/:/go/src/github.com/drone-runners/drone-runner-docker \
 -w /go/src/github.com/drone-runners/drone-runner-docker \
-registry.cn-qingdao.aliyuncs.com/wod-k8s/tmate:v2.4.0-amd64 \
-cp /build/tmate release/linux/amd64/tmate
+registry.cn-qingdao.aliyuncs.com/wod/tmate:2.4.0-amd64 \
+cp /bin/tmate release/linux/amd64/tmate
+file release/linux/amd64/tmate
+
+docker run -it \
+--rm \
+-v $PWD/:/go/src/github.com/drone-runners/drone-runner-docker \
+-w /go/src/github.com/drone-runners/drone-runner-docker \
+registry.cn-qingdao.aliyuncs.com/wod/tmate:2.4.0-loong64 \
+ash
+cp /bin/tmate release/linux/loong64/tmate && \
+file release/linux/loong64/tmate
 ```
 
 ## cache
@@ -46,7 +57,7 @@ docker run --rm \
   -e PLUGIN_SECRET_KEY=$PLUGIN_SECRET_KEY \
   -e DRONE_REPO_OWNER="open-beagle" \
   -e DRONE_REPO_NAME="drone-runner-docker" \
-  -e PLUGIN_MOUNT="./.git" \
+  -e PLUGIN_MOUNT="./.git,./vendor" \
   -v $(pwd):$(pwd) \
   -w $(pwd) \
   registry.cn-qingdao.aliyuncs.com/wod/devops-s3-cache:1.0

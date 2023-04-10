@@ -1,3 +1,7 @@
+ARG TMATE
+
+FROM ${TMATE} as tmate
+
 ARG BASE
 
 FROM ${BASE}
@@ -14,10 +18,8 @@ ENV GODEBUG netdns=go
 ENV DRONE_RUNNER_OS=${TARGETOS}
 ENV DRONE_RUNNER_ARCH=${TARGETARCH}
 
-ADD release/${TARGETOS}/${TARGETARCH}/drone-runner-docker /bin/
-ADD release/${TARGETOS}/${TARGETARCH}/tmate /bin/
-
-RUN chmod +x /bin/tmate && chmod +x /bin/drone-runner-docker
+COPY release/${TARGETOS}/${TARGETARCH}/drone-runner-docker /bin/
+COPY --from=tmate /bin/tmate /bin/
 
 LABEL com.centurylinklabs.watchtower.stop-signal="SIGINT"
 

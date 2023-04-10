@@ -1,12 +1,11 @@
-From 5b7ffbc31f47153345e0e45a9e5005426ee4f285 Mon Sep 17 00:00:00 2001
+From c2dca1bceca5e768c22710fb7298f2905dbd0ac6 Mon Sep 17 00:00:00 2001
 From: shucheng <shucheng@bd-apaas.com>
-Date: Mon, 27 Mar 2023 19:05:06 +0800
-Subject: [PATCH] 1
+Date: Mon, 10 Apr 2023 23:07:13 +0800
+Subject: [PATCH] labels
 
 ---
  command/daemon/daemon.go | 1 +
- go.mod                   | 5 ++---
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ 1 file changed, 1 insertion(+)
 
 diff --git a/command/daemon/daemon.go b/command/daemon/daemon.go
 index 63c9850..15a8886 100644
@@ -20,35 +19,6 @@ index 63c9850..15a8886 100644
  			Kind:    resource.Kind,
  			Type:    resource.Type,
  			OS:      config.Platform.OS,
-diff --git a/go.mod b/go.mod
-index 5fb7b23..05b3a15 100644
---- a/go.mod
-+++ b/go.mod
-@@ -4,6 +4,8 @@ go 1.16
- 
- replace github.com/docker/docker => github.com/docker/engine v17.12.0-ce-rc1.0.20200309214505-aa6a9891b09c+incompatible
- 
-+replace github.com/drone/runner-go => github.com/open-beagle/drone-runner-go v1.12.0-beagle.0
-+
- require (
- 	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78 // indirect
- 	github.com/Microsoft/go-winio v0.4.11 // indirect
-@@ -25,7 +27,6 @@ require (
- 	github.com/gorilla/mux v1.7.4 // indirect
- 	github.com/joho/godotenv v1.3.0
- 	github.com/kelseyhightower/envconfig v1.4.0
--	github.com/kr/pretty v0.1.0 // indirect
- 	github.com/mattn/go-isatty v0.0.8
- 	github.com/morikuni/aec v1.0.0 // indirect
- 	github.com/opencontainers/go-digest v1.0.0-rc1 // indirect
-@@ -37,7 +38,5 @@ require (
- 	golang.org/x/time v0.0.0-20181108054448-85acf8d2951c // indirect
- 	google.golang.org/grpc v1.29.1 // indirect
- 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
--	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
--	gopkg.in/yaml.v2 v2.2.2 // indirect
- 	gotest.tools v2.2.0+incompatible // indirect
- )
 -- 
-2.35.1
+2.39.2
 
