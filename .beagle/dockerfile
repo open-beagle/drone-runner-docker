@@ -1,8 +1,7 @@
 ARG TMATE
+ARG BASE
 
 FROM ${TMATE} as tmate
-
-ARG BASE
 
 FROM ${BASE}
 
