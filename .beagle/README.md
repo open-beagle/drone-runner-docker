@@ -19,13 +19,13 @@ git apply .beagle/0004-gomod.patch
 docker run -it --rm \
 -v $PWD/:/go/src/github.com/drone-runners/drone-runner-docker \
 -w /go/src/github.com/drone-runners/drone-runner-docker \
-registry.cn-qingdao.aliyuncs.com/wod/golang:1.20 \
+registry.cn-qingdao.aliyuncs.com/wod/golang:1.19-loongnix \
 rm -rf vendor && go mod vendor
 
 docker run -it --rm \
 -v $PWD/:/go/src/github.com/drone-runners/drone-runner-docker \
 -w /go/src/github.com/drone-runners/drone-runner-docker \
-registry.cn-qingdao.aliyuncs.com/wod/golang:1.20 \
+registry.cn-qingdao.aliyuncs.com/wod/golang:1.19-loongnix \
 .beagle/build.sh
 
 docker run -it \
