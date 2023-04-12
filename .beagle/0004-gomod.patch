@@ -1,7 +1,7 @@
-From 8c666dd0c9c1c275576d4ab62a443655ef1418fd Mon Sep 17 00:00:00 2001
+From 463641be565aaf0cd42b75c4ecc18ecd4de4733d Mon Sep 17 00:00:00 2001
 From: shucheng <shucheng@bd-apaas.com>
-Date: Mon, 10 Apr 2023 23:08:04 +0800
-Subject: [PATCH] go mod
+Date: Thu, 13 Apr 2023 00:13:07 +0800
+Subject: [PATCH] gomod
 
 ---
  go.mod | 48 +++++++++++++++++++++++++++++++++---------------
@@ -9,7 +9,7 @@ Subject: [PATCH] go mod
  2 files changed, 43 insertions(+), 24 deletions(-)
 
 diff --git a/go.mod b/go.mod
-index 5fb7b23..f13d3a5 100644
+index 5fb7b23..3f78082 100644
 --- a/go.mod
 +++ b/go.mod
 @@ -1,43 +1,61 @@
@@ -20,7 +20,7 @@ index 5fb7b23..f13d3a5 100644
  
  replace github.com/docker/docker => github.com/docker/engine v17.12.0-ce-rc1.0.20200309214505-aa6a9891b09c+incompatible
  
-+replace github.com/drone/runner-go => github.com/open-beagle/drone-runner-go v1.12.0-beagle.0
++replace github.com/drone/runner-go => github.com/open-beagle/drone-runner-go v1.12.0-beagle.1
 +
  require (
 -	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78 // indirect
@@ -90,7 +90,7 @@ index 5fb7b23..f13d3a5 100644
  	gotest.tools v2.2.0+incompatible // indirect
  )
 diff --git a/go.sum b/go.sum
-index 6c07e12..f0b182c 100644
+index 6c07e12..0924b99 100644
 --- a/go.sum
 +++ b/go.sum
 @@ -41,8 +41,6 @@ github.com/drone/drone-go v1.7.1/go.mod h1:fxCf9jAnXDZV1yDr0ckTuWd1intvcQwfJmTRp
@@ -117,8 +117,8 @@ index 6c07e12..f0b182c 100644
  github.com/morikuni/aec v1.0.0/go.mod h1:BbKIizmSmc5MMPqRYbxO4ZU0S0+P200+tUnFx7PXmsc=
  github.com/natessilva/dag v0.0.0-20180124060714-7194b8dcc5c4 h1:dnMxwus89s86tI8rcGVp2HwZzlz7c5o92VOy7dSckBQ=
  github.com/natessilva/dag v0.0.0-20180124060714-7194b8dcc5c4/go.mod h1:cojhOHk1gbMeklOyDP2oKKLftefXoJreOQGOrXk+Z38=
-+github.com/open-beagle/drone-runner-go v1.12.0-beagle.0 h1:fI9aD4dQd71RiLOehMAGqegf+epm4L0kpQfZ/iGmOtA=
-+github.com/open-beagle/drone-runner-go v1.12.0-beagle.0/go.mod h1:+TbUeBMzD8Clid8nV1C58WRHkO5+GJMe2DJY0nCZfRc=
++github.com/open-beagle/drone-runner-go v1.12.0-beagle.1 h1:0QUj2AotQRiVPFbT3syyz0gY+lXZ+XYBSYG2Cp1iuSE=
++github.com/open-beagle/drone-runner-go v1.12.0-beagle.1/go.mod h1:+TbUeBMzD8Clid8nV1C58WRHkO5+GJMe2DJY0nCZfRc=
  github.com/opencontainers/go-digest v1.0.0-rc1 h1:WzifXhOVOEOuFYOJAW6aQqW0TooG2iki3E3Ii+WN7gQ=
  github.com/opencontainers/go-digest v1.0.0-rc1/go.mod h1:cMLVZDEM3+U2I4VmLI6N8jQYUd2OVphdqWwCJHrFt2s=
  github.com/opencontainers/image-spec v1.0.1 h1:JMemWkRwHx4Zj+fVxWoMCFm/8sYGGrUVojFA6h/TRcI=
