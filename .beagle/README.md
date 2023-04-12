@@ -19,13 +19,13 @@ git apply .beagle/0004-gomod.patch
 docker run -it --rm \
 -v $PWD/:/go/src/github.com/drone-runners/drone-runner-docker \
 -w /go/src/github.com/drone-runners/drone-runner-docker \
-registry.cn-qingdao.aliyuncs.com/wod/golang:1.19-loongnix \
+registry.cn-qingdao.aliyuncs.com/wod/golang:1.20 \
 rm -rf vendor && go mod vendor
 
 docker run -it --rm \
 -v $PWD/:/go/src/github.com/drone-runners/drone-runner-docker \
 -w /go/src/github.com/drone-runners/drone-runner-docker \
-registry.cn-qingdao.aliyuncs.com/wod/golang:1.19-loongnix \
+registry.cn-qingdao.aliyuncs.com/wod/golang:1.20 \
 .beagle/build.sh
 
 docker run -it \
@@ -57,7 +57,7 @@ docker run --rm \
   -e PLUGIN_SECRET_KEY=$PLUGIN_SECRET_KEY \
   -e DRONE_REPO_OWNER="open-beagle" \
   -e DRONE_REPO_NAME="drone-runner-docker" \
-  -e PLUGIN_MOUNT="./.git,./vendor" \
+  -e PLUGIN_MOUNT=".git,vendor" \
   -v $(pwd):$(pwd) \
   -w $(pwd) \
   registry.cn-qingdao.aliyuncs.com/wod/devops-s3-cache:1.0
