@@ -46,6 +46,27 @@ cp /bin/tmate release/linux/loong64/tmate && \
 file release/linux/loong64/tmate
 ```
 
+## loongarch
+
+```bash
+git apply .beagle/0001-lables.patch
+git apply .beagle/0002-disable-create-network.patch
+git apply .beagle/0003-ci-workspace.patch
+git apply .beagle/0004-gomod.patch
+
+docker run -it --rm \
+-v $PWD/:/go/src/github.com/drone-runners/drone-runner-docker \
+-w /go/src/github.com/drone-runners/drone-runner-docker \
+registry.cn-qingdao.aliyuncs.com/wod/golang:1.19-loongnix \
+rm -rf vendor && go mod vendor
+
+docker run -it --rm \
+-v $PWD/:/go/src/github.com/drone-runners/drone-runner-docker \
+-w /go/src/github.com/drone-runners/drone-runner-docker \
+registry.cn-qingdao.aliyuncs.com/wod/golang:1.19-loongnix \
+.beagle/build.sh
+```
+
 ## cache
 
 ```bash

@@ -36,7 +36,7 @@ steps:
         from_secret: SOCKS5_PROXY
 
   - name: golang
-    image: registry.cn-qingdao.aliyuncs.com/wod/golang:1.20
+    image: registry.cn-qingdao.aliyuncs.com/wod/golang:1.19-loongnix
     commands:
       - git apply .beagle/0001-lables.patch
       - git apply .beagle/0002-disable-create-network.patch
